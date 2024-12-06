@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "164220448803",
+    "project_id": "nouman-learningflutter",
+    "storage_bucket": "nouman-learningflutter.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164220448803:android:d52ac4a0fe976324c24196",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMUzJZAFptFvE2DJnVlEhQ8Gp1aCUxI5M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
