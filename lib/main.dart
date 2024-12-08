@@ -19,6 +19,7 @@ void main() {
     routes: {
       '/login/': (context) => const LoginView(),
       '/register/': (context) => const RegisterView(),
+      '/notes/': (context) => const NotesView(),
     },
   ));
 }
@@ -69,7 +70,7 @@ class _NotesViewState extends State<NotesView> {
         actions: [
           PopupMenuButton<MenuAction>(
             onSelected: (value) async {
-              //devtools.log(value.toString());
+              devtools.log(value.toString());
               switch (value) {
                 case MenuAction.logout:
                   final shouldLogout = await showLogoutDialog(context);
