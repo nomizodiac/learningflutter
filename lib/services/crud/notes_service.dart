@@ -14,7 +14,9 @@ class NotesService {
 
   DatabaseUser? _user;
 
-  // static final NotesService _shared = NotesService._sharedInstance();
+  static final NotesService _shared = NotesService._sharedInstance();
+  NotesService._sharedInstance();
+  factory NotesService() => _shared;
 
   // NotesService._sharedInstance() {
   //   _notesStreamController = StreamController<List<DatabaseNote>>.broadcast(
@@ -24,7 +26,6 @@ class NotesService {
   //   );
   // }
 
-  // factory NotesService() => _shared;
 
   // late final StreamController<List<DatabaseNote>> _notesStreamController;
 
