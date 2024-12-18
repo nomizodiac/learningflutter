@@ -14,23 +14,6 @@ class NotesService {
 
   DatabaseUser? _user;
 
-
-
-  // Stream<List<DatabaseNote>> get allNotes =>
-  //     _notesStreamController.stream.filter((note) {
-  //       devtools.log("NotesAppLog: allNotes");
-
-  //       final currentUser = _user;
-  //       if (currentUser != null) {
-  //         devtools.log("NotesAppLog: currentUser != null");
-
-  //         return note.userId == currentUser.id;
-  //       } else {
-  //         devtools.log("NotesAppLog: UserShouldBeSetBeforeReadingAllNotes");
-  //         throw UserShouldBeSetBeforeReadingAllNotes();
-  //       }
-  //     });
-
   late final StreamController<List<DatabaseNote>> _notesStreamController;
   static final NotesService _shared = NotesService._sharedInstance();
   factory NotesService() => _shared;
@@ -43,10 +26,15 @@ class NotesService {
     );
   }
 
-  Stream<List<DatabaseNote>> get allNotes {
-    devtools.log("NotesAppLog: Listening to allNotes stream");
-    return _notesStreamController.stream;
-  }
+  Stream<List<DatabaseNote>> get allNotes =>
+      _notesStreamController.stream.filter((note) {
+        final currentUser = _user;
+        if (currentUser != null) {
+          return note.userId == currentUser.id;
+        } else {
+          throw UserShouldBeSetBeforeReadingAllNotes();
+        }
+      });
 
   Future<DatabaseUser> getOrCreateUser({
     required String email,
