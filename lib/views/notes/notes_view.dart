@@ -5,6 +5,9 @@ import 'package:flutter_application_1/services/auth/auth_service.dart';
 import 'package:flutter_application_1/services/crud/notes_service.dart';
 import 'dart:developer' as devtools show log;
 
+import '../../utilities/dialogs/logout_dialog.dart';
+import 'notes_list_view.dart';
+
 class NotesView extends StatefulWidget {
   const NotesView({super.key});
 
@@ -40,7 +43,7 @@ class _NotesViewState extends State<NotesView> {
               devtools.log(value.toString());
               switch (value) {
                 case MenuAction.logout:
-                  final shouldLogout = await showLogoutDialog(context);
+                  final shouldLogout = await showLogOutDialog(context);
                   devtools.log(shouldLogout.toString());
                   if (shouldLogout) {
                     await AuthService.firebase().logout();
@@ -71,23 +74,18 @@ class _NotesViewState extends State<NotesView> {
                     case ConnectionState.active:
                       if (snapshot.hasData) {
                         final allNotes = snapshot.data as List<DatabaseNote>;
-                        return ListView.builder(
-                          itemCount: allNotes.length,
-                          itemBuilder: (context, index) {
-                            final note = allNotes[index];
-                            return ListTile(
-                              title: Text(
-                                note.text,
-                                maxLines: 1,
-                                softWrap: true,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            );
-                            return const Text('Item');
+                        return NotesListView(
+                          notes: allNotes,
+                          onDeleteNote: (note) async {
+                            await _notesService.deleteNote(id: note.id);
+                          },
+                          onTap: (note) {
+
                           },
                         );
-                      } else
+                      } else {
                         return const Text('Waiting for notes to load..');
+                      }
                     default:
                       return const CircularProgressIndicator();
                   }
@@ -100,28 +98,4 @@ class _NotesViewState extends State<NotesView> {
       ),
     );
   }
-}
-
-Future<bool> showLogoutDialog(BuildContext context) {
-  return showDialog<bool>(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
-        actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-              child: const Text('Cancel')),
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              child: const Text('Yes')),
-        ],
-      );
-    },
-  ).then((value) => value ?? false);
 }
