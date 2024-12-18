@@ -14,20 +14,7 @@ class NotesService {
 
   DatabaseUser? _user;
 
-  static final NotesService _shared = NotesService._sharedInstance();
-  NotesService._sharedInstance();
-  factory NotesService() => _shared;
 
-  // NotesService._sharedInstance() {
-  //   _notesStreamController = StreamController<List<DatabaseNote>>.broadcast(
-  //     onListen: () {
-  //       _notesStreamController.sink.add(_notes);
-  //     },
-  //   );
-  // }
-
-
-  // late final StreamController<List<DatabaseNote>> _notesStreamController;
 
   // Stream<List<DatabaseNote>> get allNotes =>
   //     _notesStreamController.stream.filter((note) {
@@ -44,8 +31,17 @@ class NotesService {
   //       }
   //     });
 
-  final _notesStreamController =
-      StreamController<List<DatabaseNote>>.broadcast();
+  late final StreamController<List<DatabaseNote>> _notesStreamController;
+  static final NotesService _shared = NotesService._sharedInstance();
+  factory NotesService() => _shared;
+
+  NotesService._sharedInstance() {
+    _notesStreamController = StreamController<List<DatabaseNote>>.broadcast(
+      onListen: () {
+        _notesStreamController.sink.add(_notes);
+      },
+    );
+  }
 
   Stream<List<DatabaseNote>> get allNotes {
     devtools.log("NotesAppLog: Listening to allNotes stream");
