@@ -73,7 +73,7 @@ class _NotesViewState extends State<NotesView> {
                 stream: _notesService.allNotes,
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
+                    case ConnectionState.active:
                       return const Text('Waiting for notes to load..');
                     default:
                       return const CircularProgressIndicator();
