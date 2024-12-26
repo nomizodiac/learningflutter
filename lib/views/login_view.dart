@@ -3,6 +3,7 @@ import 'package:flutter_application_1/constants/routes.dart';
 import 'package:flutter_application_1/services/auth/auth_exceptions.dart';
 import 'package:flutter_application_1/services/auth/bloc/auth_bloc.dart';
 import 'package:flutter_application_1/services/auth/bloc/auth_event.dart';
+import 'package:flutter_application_1/services/auth/bloc/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../utilities/dialogs/error_dialog.dart';
@@ -44,19 +45,24 @@ class _LoginViewState extends State<LoginView> {
           autocorrect: false,
           decoration: const InputDecoration(hintText: 'Enter your password'),
         ),
-        TextButton(
-            onPressed: () async {
-              try {
+        BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) async {
+            if(state is AuthStateLoggedOut) {
+              if(state.exception is InvalidCredentialsAuthException) {
+                await showErrorDialog(context, 'Invalid credentials');
+              } else if(state.exception is GenericAuthException) {
+                await showErrorDialog(context, "Authentication error");
+              }
+            }
+          },
+          child: TextButton(
+              onPressed: () async {
                 final email = _email.text;
                 final password = _password.text;
                 context.read<AuthBloc>().add(AuthEventLogin(email, password));
-              } on InvalidCredentialsAuthException catch (e) {
-                await showErrorDialog(context, 'Invalid credentials');
-              } on GenericAuthException catch (e) {
-                await showErrorDialog(context, e.toString());
-              }
-            },
-            child: const Text('Login')),
+              },
+              child: const Text('Login')),
+        ),
         TextButton(
             onPressed: () {
               Navigator.of(context)
