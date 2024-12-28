@@ -34,7 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       bool didSendEmail;
       Exception? exception;
       try {
-        //await provider.sendPasswordReset(toEmail: email);
+        await provider.sendPasswordReset(toEmail: email);
         didSendEmail = true;
         exception = null;
       } on Exception catch (e) {
