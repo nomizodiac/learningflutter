@@ -12,10 +12,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'constants/routes.dart';
 import 'helpers/loading/loading_screen.dart';
 import 'views/verify_email_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
+    supportedLocales: AppLocalizations.supportedLocales,
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
     title: 'Flutter Demo',
     theme: ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),

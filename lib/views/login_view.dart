@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/extensions/buildcontext/loc.dart';
 import 'package:flutter_application_1/services/auth/auth_exceptions.dart';
 import 'package:flutter_application_1/services/auth/bloc/auth_bloc.dart';
 import 'package:flutter_application_1/services/auth/bloc/auth_event.dart';
 import 'package:flutter_application_1/services/auth/bloc/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../utilities/dialogs/error_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -38,7 +40,7 @@ class _LoginViewState extends State<LoginView> {
       },
       child: Scaffold(
           appBar: AppBar(
-            title: Text('Login'),
+            title: Text(context.loc.login),
           ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
