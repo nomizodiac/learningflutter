@@ -3,7 +3,6 @@ import 'package:flutter_application_1/services/auth/auth_exceptions.dart';
 import 'package:flutter_application_1/services/auth/bloc/auth_bloc.dart';
 import 'package:flutter_application_1/services/auth/bloc/auth_event.dart';
 import 'package:flutter_application_1/services/auth/bloc/auth_state.dart';
-import 'package:flutter_application_1/utilities/dialogs/loading_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../utilities/dialogs/error_dialog.dart';
 
@@ -17,7 +16,6 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
-  CloseDialog? _closeDialogHandle;
 
   @override
   void initState() {
@@ -31,14 +29,6 @@ class _LoginViewState extends State<LoginView> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
         if (state is AuthStateLoggedOut) {
-          final closeDialog = _closeDialogHandle;
-          if (!state.isLoading && closeDialog != null) {
-            closeDialog();
-            _closeDialogHandle = null;
-          } else if (state.isLoading && closeDialog == null) {
-            _closeDialogHandle =
-                showLoadingDialog(context: context, text: 'Loading...');
-          }
           if (state.exception is InvalidCredentialsAuthException) {
             await showErrorDialog(context, 'Invalid credentials');
           } else if (state.exception is GenericAuthException) {
@@ -67,7 +57,7 @@ class _LoginViewState extends State<LoginView> {
               onPressed: () async {
                 final email = _email.text;
                 final password = _password.text;
-                context.read<AuthBloc>().add(AuthEventLogin(email, password));
+                context.read<AuthBloc>().add(AuthEventLogIn(email, password));
               },
               child: const Text('Login')),
           TextButton(
